@@ -32,6 +32,8 @@ if __name__ == '__main__':
                 tempo = i['direction']['sound']['@tempo']
             else:
                 tempo = 120
+        else:
+            tempo = 120
 
         # Get sub notes
         for note in i['note']:
