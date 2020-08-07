@@ -2,7 +2,6 @@ VERSION = "[#VERSION]\n" \
           "UST Version1.2"
 
 SETTING = "[#SETTING]" \
-          "\nTempo=120.00" \
           "\nTracks=1" \
           "\nProjectName=" \
           "\nVoiceDir=%VOICE%" \
