@@ -19,6 +19,7 @@ def handle_pitch(pit):
 
 if __name__ == '__main__':
     score = xmltodict.parse(open('test/Simple.xml').read())['score-partwise']['part']['measure']
+    tempo = 120
     for i in score:
         # width -> Length
         if '@width' in i:
@@ -33,7 +34,7 @@ if __name__ == '__main__':
             else:
                 tempo = 120
         else:
-            tempo = 120
+            pass
 
         # Get sub notes
         for note in i['note']:
@@ -51,4 +52,4 @@ if __name__ == '__main__':
             else:
                 text = 'R'
 
-            print(str(pitch) + text + length + tempo)
+            print(str(pitch) + text + length + str(tempo))
