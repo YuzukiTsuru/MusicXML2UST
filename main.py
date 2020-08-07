@@ -1,7 +1,11 @@
+import json
 import re
 
 import xmltodict
-import json
+
+
+def handle_ust():
+    pass
 
 
 def handle_pitch(pit):
@@ -14,24 +18,35 @@ def handle_pitch(pit):
 
 
 if __name__ == '__main__':
-    score = xmltodict.parse(open('test/Simple.xml').read())
-    score = score['score-partwise']['part']['measure']
+    score = xmltodict.parse(open('test/Simple.xml').read())['score-partwise']['part']['measure']
     for i in score:
+        # width -> Length
         if '@width' in i:
             length = i['@width']
         else:
             length = 1
+
+        # tempo -> Tempo
+        if 'direction' in i:
+            if 'sound' in i['direction']:
+                tempo = i['direction']['sound']['@tempo']
+            else:
+                tempo = 120
+
+        # Get sub notes
         for note in i['note']:
 
+            # pitch -> NoteNum
             if 'pitch' in note:
                 pitch_name = note['pitch']['step'] + note['pitch']['octave']
                 pitch = handle_pitch(pitch_name)
             else:
                 pitch = 24
 
+            # lyric -> Lyric
             if 'lyric' in note:
                 text = note['lyric']['text']['#text']
             else:
                 text = 'R'
 
-            print(str(pitch) + text + length)
+            print(str(pitch) + text + length + tempo)
