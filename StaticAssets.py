@@ -1,7 +1,7 @@
 VERSION = "[#VERSION]\n" \
           "UST Version1.2"
 
-SETTING = "[#SETTING]" \
+SETTING = "\n[#SETTING]" \
           "\nTracks=1" \
           "\nProjectName=" \
           "\nVoiceDir=%VOICE%" \
@@ -11,4 +11,4 @@ SETTING = "[#SETTING]" \
           "\nTool2=resampler.exe" \
           "\nMode2=True"
 
-TRACKEND = "[#TRACKEND]"
+TRACKEND = "\n[#TRACKEND]"

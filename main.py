@@ -3,9 +3,24 @@ import re
 
 import xmltodict
 
+from StaticAssets import *
 
-def handle_ust():
-    pass
+
+def handle_ust(lenth, lyc, noten, _id):
+    if _id < 10:
+        note_id = '[#000' + str(_id) + ']'
+    elif 100 > _id > 9:
+        note_id = '[#00' + str(_id) + ']'
+    elif 1000 > _id > 99:
+        note_id = '[#0' + str(_id) + ']'
+    elif 10000 > _id > 999:
+        note_id = '[#' + str(_id) + ']'
+    else:
+        raise Exception('不会吧不会吧不会真的有人一个ust弄出10000个音符吧')
+
+    return "\n" + note_id + "\nLength=" + str(lenth) + "\nLyric=" + str(lyc) + "\nNoteNum=" + str(
+        noten) + "\nIntensity=100" \
+                 "\nModulation=0 "
 
 
 def handle_pitch(pit):
@@ -20,6 +35,11 @@ def handle_pitch(pit):
 if __name__ == '__main__':
     score = xmltodict.parse(open('test/Simple.xml').read())['score-partwise']['part']['measure']
     tempo = 120
+
+    ust = VERSION + SETTING
+
+    _id = 0
+
     for i in score:
         # width -> Length
         if '@width' in i:
@@ -31,10 +51,8 @@ if __name__ == '__main__':
         if 'direction' in i:
             if 'sound' in i['direction']:
                 tempo = i['direction']['sound']['@tempo']
-            else:
-                tempo = 120
-        else:
-            pass
+
+        ust = ust + "\nTempo=" + str(tempo)
 
         # Get sub notes
         for note in i['note']:
@@ -52,4 +70,8 @@ if __name__ == '__main__':
             else:
                 text = 'R'
 
-            print(str(pitch) + text + length + str(tempo))
+            ust = ust + handle_ust(length, text, pitch, _id)
+
+            _id = _id + 1
+    ust = ust + TRACKEND
+    print(ust)
