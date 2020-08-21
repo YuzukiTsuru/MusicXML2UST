@@ -74,3 +74,6 @@ if __name__ == '__main__':
             _id = _id + 1
     ust = ust + TRACKEND
     print(ust)
+
+    file = open('test/Simple.ust', mode='w')
+    file.write(ust)
