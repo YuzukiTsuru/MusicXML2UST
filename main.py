@@ -1,6 +1,7 @@
 import re
 import argparse
 import xmltodict
+import json
 
 from StaticAssets import *
 
@@ -36,6 +37,10 @@ if __name__ == '__main__':
     paser.add_argument('Path', type=str, default='test/Simple.xml', help='xml文件路径')
     args = paser.parse_args()
     score = xmltodict.parse(open(args.Path).read())['score-partwise']['part']['measure']
+
+    scr = json.dumps(score)
+    open('test/log.json', mode='w').write(scr)
+
     tempo = 120
 
     ust = VERSION + SETTING
@@ -46,6 +51,8 @@ if __name__ == '__main__':
         # width -> Length
         if '@width' in i:
             length = i['@width']
+        elif 'duration' in i['note']:
+            length = i['note']['duration']
         else:
             length = 1
 
@@ -61,14 +68,24 @@ if __name__ == '__main__':
 
             # pitch -> NoteNum
             if 'pitch' in note:
-                pitch_name = note['pitch']['step'] + note['pitch']['octave']
+                if 'alter' in note['pitch']:
+                    pitch_name = note['pitch']['step'] + "#" + note['pitch']['octave']
+                else:
+                    pitch_name = note['pitch']['step'] + note['pitch']['octave']
                 pitch = handle_pitch(pitch_name)
+                # redo width -> Length
+                if 'duration' in note:
+                    length = note['duration']
+
             else:
                 pitch = 24
 
             # lyric -> Lyric
             if 'lyric' in note:
-                text = note['lyric']['text']['#text']
+                if '#text' in note['lyric']['text']:
+                    text = note['lyric']['text']['#text']
+                else:
+                    text = note['lyric']['text']
             else:
                 text = 'R'
 
@@ -77,5 +94,5 @@ if __name__ == '__main__':
             _id = _id + 1
     ust = ust + TRACKEND
 
-    file = open('test/Simple.ust', mode='w')
+    file = open(args.Path[0: len(args.Path) - 3] + "ust", mode='w')
     file.write(ust)

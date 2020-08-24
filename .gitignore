@@ -250,3 +250,4 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/intellij
 
 *.json
+/test/WORLD'S END UMBRELLA.xml
