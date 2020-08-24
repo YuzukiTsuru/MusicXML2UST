@@ -1,5 +1,5 @@
 import re
-
+import argparse
 import xmltodict
 
 from StaticAssets import *
@@ -32,7 +32,10 @@ def handle_pitch(pit):
 
 
 if __name__ == '__main__':
-    score = xmltodict.parse(open('test/Simple.xml').read())['score-partwise']['part']['measure']
+    paser = argparse.ArgumentParser()
+    paser.add_argument('Path', type=str, default='test/Simple.xml', help='xml文件路径')
+    args = paser.parse_args()
+    score = xmltodict.parse(open(args.Path).read())['score-partwise']['part']['measure']
     tempo = 120
 
     ust = VERSION + SETTING
@@ -73,7 +76,6 @@ if __name__ == '__main__':
 
             _id = _id + 1
     ust = ust + TRACKEND
-    print(ust)
 
     file = open('test/Simple.ust', mode='w')
     file.write(ust)
