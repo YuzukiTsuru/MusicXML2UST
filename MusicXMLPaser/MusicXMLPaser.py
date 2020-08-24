@@ -784,20 +784,19 @@ class Note(object):
             res.append({'number': lyric['number'], 'info': {'note': self.pitch[0], 'lyric': lyric['text']}})
         return res
 
+    # For MusicXML2UST
     def get_note(self):
         if self.is_rest:
             pit = str(self.is_rest)
         else:
             pit = str(self.pitch[1])
 
+        lyc = 'R'
         if self.has_lyric:
             for lyric in self.lyric:
                 lyc = str(lyric['text'])
-        else:
-            lyc = 'R'
 
-        return [str(self.note_duration.duration), str(self.note_duration.midi_ticks), str(self.note_duration.seconds),
-                pit, str(self.voice), str(self.velocity), lyc]
+        return [str(self.note_duration.duration), pit, lyc]
 
     @staticmethod
     def pitch_to_midi_pitch(step, alter, octave):
