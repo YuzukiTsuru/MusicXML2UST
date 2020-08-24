@@ -23,8 +23,13 @@ def main(path):
 
 if __name__ == '__main__':
     import sys
-    if len(sys.argv) < 1:
-        print('MusicXML To UST Ver 0.1 \nusage: main [-h] [-i INPUT]')
+    if len(sys.argv) < 2:
+        print('MusicXML To UST Ver 0.1'
+              '\nLicensed under the Apache License, Version 2.0 (the "License");'
+              '\nyou may not use this file except in compliance with the License.'
+              '\nYou may obtain a copy of the License at'
+              '\nhttp://www.apache.org/licenses/LICENSE-2.0'
+              '\nusage: main [-h] [-i INPUT]')
     else:
         parser = argparse.ArgumentParser()
         parser.add_argument('-i', '--input', default=None, type=str, help='path to MusicXML (default: None)')
