@@ -39,7 +39,7 @@ if __name__ == '__main__':
     score = xmltodict.parse(open(args.Path).read())['score-partwise']['part']['measure']
 
     scr = json.dumps(score)
-    open('test/log.json', mode='w').write(scr)
+    # open('test/log.json', mode='w').write(scr)
 
     tempo = 120
 
@@ -65,20 +65,21 @@ if __name__ == '__main__':
 
         # Get sub notes
         for note in i['note']:
+            if 'print' in i:
+                # pitch -> NoteNum
+                if 'pitch' and 'lyric' in note:
+                    print(i['@number'] + str(note['pitch']))
+                    if 'alter' in note['pitch']:
+                        pitch_name = note['pitch']['step'] + "#" + note['pitch']['octave']
+                    else:
+                        pitch_name = note['pitch']['step'] + note['pitch']['octave']
+                    pitch = handle_pitch(pitch_name)
+                    # redo width -> Length
+                    if 'duration' in note:
+                        length = note['duration']
 
-            # pitch -> NoteNum
-            if 'pitch' in note:
-                if 'alter' in note['pitch']:
-                    pitch_name = note['pitch']['step'] + "#" + note['pitch']['octave']
                 else:
-                    pitch_name = note['pitch']['step'] + note['pitch']['octave']
-                pitch = handle_pitch(pitch_name)
-                # redo width -> Length
-                if 'duration' in note:
-                    length = note['duration']
-
-            else:
-                pitch = 24
+                    pitch = 24
 
             # lyric -> Lyric
             if 'lyric' in note:
